@@ -34,7 +34,7 @@ class _ImageInputState extends State<ImageInput> {
     return Column(
       children: [
         if (_takenImages.isNotEmpty)
-          Container(
+          SizedBox(
             height: 250,
             width: double.infinity,
             child: ListView.builder(
@@ -52,7 +52,7 @@ class _ImageInputState extends State<ImageInput> {
           ),
         TextButton.icon(
           icon: const Icon(Icons.camera_alt),
-          label: const Text('Take Picture'),
+          label: const Text('Take Pictures'),
           onPressed: _takePicture,
         ),
       ],
