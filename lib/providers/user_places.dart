@@ -8,12 +8,13 @@ final uuid = Uuid();
 class UserPlaces extends StateNotifier<List<Place>> {
   UserPlaces([List<Place>? initialPlaces]) : super(initialPlaces ?? []);
 
-  void addPlace(String name, String description, List<File> images) {
+  void addPlace(String name, String description, List<File> images, PlaceLocation location) {
     final newPlace = Place(
       id: uuid.v4(),
       name: name,
       description: description,
       images: images,
+      location: location,
     );
     state = [...state, newPlace];
   }

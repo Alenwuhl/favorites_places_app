@@ -15,7 +15,11 @@ class PlacesList extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('No places added yet!', style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Theme.of(context).colorScheme.primary)),
+            Text('No places added yet!',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge!
+                    .copyWith(color: Theme.of(context).colorScheme.primary)),
             const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
@@ -32,12 +36,39 @@ class PlacesList extends StatelessWidget {
       );
     }
 
-    return ListView.builder(itemCount: places.length, itemBuilder: (ctx, index) => ListTile(
-      title: Text(places[index].name, style: Theme.of(context).textTheme.titleMedium!.copyWith(color: Theme.of(context).colorScheme.primary)),
-      subtitle: Text(places[index].description),
-      onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => PlacesDetailsScreen(place: places[index]),),);
-      },
-    ),);
+return ListView.builder(
+  itemCount: places.length,
+  itemBuilder: (ctx, index) => ListTile(
+    title: Text(
+      places[index].name,
+      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+            color: Theme.of(context).colorScheme.primary,
+          ),
+    ),
+    subtitle: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(places[index].description),
+        Text(
+          places[index].location.address,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+          ),
+        ),
+      ],
+    ),
+    leading: CircleAvatar(
+      backgroundImage: FileImage(places[index].images.first),
+    ),
+    onTap: () {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (ctx) => PlacesDetailsScreen(place: places[index]),
+        ),
+      );
+    },
+  ),
+);
+
   }
 }
