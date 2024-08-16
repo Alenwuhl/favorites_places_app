@@ -34,13 +34,21 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
 
     if (enteredName.isEmpty ||
         enteredDescription.isEmpty ||
-        _pickedImages.isEmpty) {
-      showAboutDialog(
+        _pickedImages.isEmpty ||
+        _selectedLocation == null) {
+      showDialog(
         context: context,
-        children: <Widget>[
-          const Text(
-              'Please enter a name, description, and take at least one picture.'),
-        ],
+        builder: (ctx) => AlertDialog(
+          title: const Text('Missing Information'),
+          content: const Text(
+              'Please enter a name, description, take at least one picture, and select a location.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(),
+              child: const Text('Okay'),
+            ),
+          ],
+        ),
       );
       return;
     }
@@ -62,7 +70,6 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
         title: const Text('Add a New Place'),
       ),
       body: SingleChildScrollView(
-        // Envuelve todo el contenido para permitir el scroll
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Column(
@@ -82,9 +89,11 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
               const SizedBox(height: 20),
               ImageInput(onSelectImage: _selectImage),
               const SizedBox(height: 10),
-              LocationInput(onSelectPlace: (location) {
-                _selectedLocation = location;
-              }),
+              LocationInput(
+                onSelectLocation: (PlaceLocation location) {
+                  _selectedLocation = location;
+                },
+              ),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _savePlace,

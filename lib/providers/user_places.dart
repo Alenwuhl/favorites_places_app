@@ -3,7 +3,7 @@ import 'package:uuid/uuid.dart';
 import 'package:favorite_places_app/models/place.dart';
 import 'dart:io';
 
-final uuid = Uuid();
+const uuid = Uuid();
 
 class UserPlaces extends StateNotifier<List<Place>> {
   UserPlaces([List<Place>? initialPlaces]) : super(initialPlaces ?? []);
