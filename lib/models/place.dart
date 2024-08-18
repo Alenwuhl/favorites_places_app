@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:favorite_places_app/providers/user_places.dart';
+
 class PlaceLocation {
   final double latitude;
   final double longitude;
@@ -19,11 +21,11 @@ class Place {
   final List<File> images;
   final PlaceLocation location;
 
-  Place({
-    required this.id,
+  Place({ 
     required this.name,
     required this.description,
     required this.images,
     required this.location,
-  });
+    String? id,
+  }) : id = id ?? uuid.v4();
 }

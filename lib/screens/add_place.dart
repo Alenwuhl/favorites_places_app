@@ -21,6 +21,7 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
   final _descriptionController = TextEditingController();
   final List<File> _pickedImages = [];
   PlaceLocation? _selectedLocation;
+  int _currentPage = 0;
 
   void _selectImage(File pickedImage) {
     setState(() {
@@ -87,8 +88,65 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: 20),
-              ImageInput(onSelectImage: _selectImage),
-              const SizedBox(height: 10),
+              _pickedImages.isEmpty
+                  ? ImageInput(onSelectImage: _selectImage)
+                  : Column(
+                      children: [
+                        SizedBox(
+                          height: 200,
+                          child: Stack(
+                            children: [
+                              PageView.builder(
+                                itemCount: _pickedImages.length,
+                                onPageChanged: (index) {
+                                  setState(() {
+                                    _currentPage = index;
+                                  });
+                                },
+                                itemBuilder: (ctx, index) => Image.file(
+                                  _pickedImages[index],
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                ),
+                              ),
+                              if (_pickedImages.length > 1)
+                                Positioned(
+                                  bottom: 10,
+                                  left: 0,
+                                  right: 0,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: List.generate(
+                                      _pickedImages.length,
+                                      (index) => Container(
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 2),
+                                        width: 8,
+                                        height: 8,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: _currentPage == index
+                                              ? Colors.white
+                                              : Colors.white.withOpacity(0.5),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            ImageInput(onSelectImage: _selectImage);
+                          },
+                          icon: const Icon(Icons.add),
+                          label: const Text("Add another image"),
+                        )
+                      ],
+                    ),
+              const SizedBox(height: 20),
               LocationInput(
                 onSelectLocation: (PlaceLocation location) {
                   _selectedLocation = location;
